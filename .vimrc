@@ -10,23 +10,8 @@ set ls=2
 set nu
 set updatetime=200
 
-" Color settings. Can also be done with export 'TERM=xterm-256color'
-set t_Co=256
-colorscheme molokai
 
-" Current line settings
-set cursorline
-
-" Custom maps
-nnoremap <c-e> :MRU<CR>
-
-" Remember what line we were on
-if has("autocmd")
-    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
-        \| exe "normal! g'\"" | endif
-endif
-
-" Vundle settings
+" VUNDLE 
 set nocompatible
 filetype off " Required for Vundle, turn it back on later
 
@@ -47,6 +32,29 @@ Plugin 'kien/ctrlp.vim'
 " Colors 
 Plugin 'tomasr/molokai'
 
+" syntax
+Plugin 'puppetlabs/puppet-syntax-vim'
+
 call vundle#end()
 filetype plugin indent on
-" End Vundle settings
+" VUNDLE END
+
+" Color settings. Can also be done with export 'TERM=xterm-256color'
+set t_Co=256
+colorscheme molokai
+
+" Current line settings
+set cursorline
+
+" Custom maps
+nnoremap <C-e> :MRU<CR>
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+
+
+" Remember what line we were on
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+        \| exe "normal! g'\"" | endif
+endif
