@@ -29,7 +29,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
 
 " File navigation
-Plugin 'yegappan/mru' 
+" Plugin 'yegappan/mru'  " Using CtrlP MRU now
 Plugin 'kien/ctrlp.vim'
 
 " Colors 
