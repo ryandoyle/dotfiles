@@ -62,3 +62,6 @@ if has("autocmd")
     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
         \| exe "normal! g'\"" | endif
 endif
+
+" Add airline tab bar
+let g:airline#extensions#tabline#enabled = 1
