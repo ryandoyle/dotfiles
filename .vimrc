@@ -50,7 +50,8 @@ colorscheme molokai
 set cursorline
 
 " Custom maps
-nnoremap <C-e> :MRU<CR>
+"nnoremap <C-e> :MRU<CR>
+nnoremap <C-e> :CtrlPMRU<CR>
 nnoremap <C-t> :tabnew<CR>
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
