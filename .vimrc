@@ -12,6 +12,7 @@ set nu
 set updatetime=200
 set splitright
 set splitbelow
+set lazyredraw " Faster scrolling
 
 " VUNDLE 
 set nocompatible
