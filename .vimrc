@@ -10,7 +10,8 @@ set expandtab
 set ls=2
 set nu
 set updatetime=200
-
+set splitright
+set splitbelow
 
 " VUNDLE 
 set nocompatible
