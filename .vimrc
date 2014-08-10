@@ -26,6 +26,7 @@ Plugin 'gmarik/Vundle.vim'
 " Editor helpers
 Plugin 'AutoComplPop'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'bling/vim-airline'
 
 " File navigation
 Plugin 'yegappan/mru' 
