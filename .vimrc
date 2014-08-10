@@ -1,4 +1,5 @@
 set hlsearch
+set incsearch
 syntax on
 set ts=4
 set cindent
