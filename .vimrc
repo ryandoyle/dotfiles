@@ -28,6 +28,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'AutoComplPop'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-fugitive'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
