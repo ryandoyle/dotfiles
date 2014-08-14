@@ -32,6 +32,7 @@ Plugin 'bling/vim-airline'
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
 Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'
 
 " Colors 
 Plugin 'tomasr/molokai'
@@ -56,6 +57,7 @@ nnoremap <C-e> :CtrlPMRU<CR>
 nnoremap <C-t> :tabnew<CR>
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
+nnoremap <F2> :NERDTreeToggle<CR>
 
 
 " Remember what line we were on
