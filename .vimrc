@@ -29,6 +29,7 @@ Plugin 'AutoComplPop'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
+Plugin 'taglist.vim'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
@@ -59,7 +60,8 @@ nnoremap <C-t> :tabnew<CR>
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
-
+nnoremap <F3> :NERDTreeFind<CR>
+nnoremap <F4> :TlistToggle<CR>
 
 " Remember what line we were on
 if has("autocmd")
