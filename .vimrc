@@ -13,6 +13,12 @@ set updatetime=200
 set splitright
 set splitbelow
 set lazyredraw " Faster scrolling
+set hidden " Hide buffers instead of asking to save them when chaning buffers
+
+" Use ag
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
 
 " VUNDLE 
 set nocompatible
@@ -35,6 +41,7 @@ Plugin 'taglist.vim'
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'rking/ag.vim'
 
 " Colors 
 Plugin 'tomasr/molokai'
@@ -62,6 +69,9 @@ nnoremap <C-Right> :tabnext<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TlistToggle<CR>
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <C-f> :Ag<SPACE>
+"nnoremap <C-[> :pop<CR>
 
 " Remember what line we were on
 if has("autocmd")
@@ -71,3 +81,7 @@ endif
 
 " Add airline tab bar
 let g:airline#extensions#tabline#enabled = 1
+
+" Config for taglist
+let Tlist_Use_Right_Window = 1
+let Tlist_WinWidth = 40
