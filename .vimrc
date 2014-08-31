@@ -46,8 +46,10 @@ Plugin 'rking/ag.vim'
 " Colors 
 Plugin 'tomasr/molokai'
 
-" syntax
+" Language plugins
 Plugin 'puppetlabs/puppet-syntax-vim'
+Plugin 'Keithbsmiley/rspec.vim'
+Plugin 'tpope/vim-endwise'
 
 call vundle#end()
 filetype plugin indent on
