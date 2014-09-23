@@ -50,6 +50,7 @@ Plugin 'tomasr/molokai'
 Plugin 'puppetlabs/puppet-syntax-vim'
 Plugin 'Keithbsmiley/rspec.vim'
 Plugin 'tpope/vim-endwise'
+Plugin 'justinmk/vim-syntax-extra'
 
 call vundle#end()
 filetype plugin indent on
