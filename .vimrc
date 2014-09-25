@@ -67,8 +67,8 @@ set cursorline
 "nnoremap <C-e> :MRU<CR>
 nnoremap <C-e> :CtrlPMRU<CR>
 nnoremap <C-t> :tabnew<CR>
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
+nnoremap <C-Left> :bprevious<CR>
+nnoremap <C-Right> :bnext<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TlistToggle<CR>
@@ -84,6 +84,8 @@ endif
 
 " Add airline tab bar
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t' " Just show the title
+let g:airline_theme='simple'
 
 " Config for taglist
 let Tlist_Use_Right_Window = 1
