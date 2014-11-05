@@ -63,6 +63,9 @@ filetype plugin indent on
 set t_Co=256
 colorscheme molokai
 
+" Over-ride the current setting for paren matching
+hi MatchParen      ctermfg=253  ctermbg=236 cterm=bold
+
 " Current line settings
 set cursorline
 
