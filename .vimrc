@@ -36,6 +36,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'taglist.vim'
+Plugin 'jiangmiao/auto-pairs'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
