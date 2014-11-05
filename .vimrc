@@ -31,7 +31,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Editor helpers
-Plugin 'AutoComplPop'
+Plugin 'Shougo/neocomplete.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
