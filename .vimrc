@@ -52,6 +52,8 @@ Plugin 'puppetlabs/puppet-syntax-vim'
 Plugin 'Keithbsmiley/rspec.vim'
 Plugin 'tpope/vim-endwise'
 Plugin 'justinmk/vim-syntax-extra'
+Plugin 'scrooloose/syntastic'
+Plugin 'eagletmt/neco-ghc'
 
 call vundle#end()
 filetype plugin indent on
@@ -91,3 +93,12 @@ let g:airline_theme='simple'
 " Config for taglist
 let Tlist_Use_Right_Window = 1
 let Tlist_WinWidth = 40
+
+" Autocomplete settings
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+let g:necoghc_enable_detailed_browse = 1
