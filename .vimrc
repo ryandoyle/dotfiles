@@ -73,8 +73,8 @@ set cursorline
 "nnoremap <C-e> :MRU<CR>
 nnoremap <C-e> :CtrlPMRU<CR>
 nnoremap <C-t> :tabnew<CR>
-nnoremap <C-Left> :bprevious<CR>
-nnoremap <C-Right> :bnext<CR>
+"nnoremap <C-Left> :bprevious<CR>
+"nnoremap <C-Right> :bnext<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TlistToggle<CR>
