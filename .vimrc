@@ -37,6 +37,7 @@ Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'taglist.vim'
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'scrooloose/nerdcommenter'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
@@ -57,7 +58,6 @@ Plugin 'eagletmt/neco-ghc'
 
 call vundle#end()
 filetype plugin indent on
-" VUNDLE END
 
 " Color settings. Can also be done with export 'TERM=xterm-256color'
 set t_Co=256
@@ -73,8 +73,8 @@ set cursorline
 "nnoremap <C-e> :MRU<CR>
 nnoremap <C-e> :CtrlPMRU<CR>
 nnoremap <C-t> :tabnew<CR>
-"nnoremap <C-Left> :bprevious<CR>
-"nnoremap <C-Right> :bnext<CR>
+"nnoremap <C-,> :bprevious<CR>
+"nnoremap <C-.> :bnext<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TlistToggle<CR>
