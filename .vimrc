@@ -65,6 +65,12 @@ colorscheme molokai
 
 " Over-ride the current setting for paren matching
 hi MatchParen      ctermfg=253  ctermbg=236 cterm=bold
+hi UnderCursor     ctermbg=18
+hi Search          ctermfg=253 ctermbg=21 
+" cterm=undercurl
+
+" Highlight the word under the cursor
+autocmd CursorMoved * exe printf('match UnderCursor /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " Current line settings
 set cursorline
