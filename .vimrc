@@ -78,7 +78,7 @@ set cursorline
 " Custom maps
 "nnoremap <C-e> :MRU<CR>
 nnoremap <C-e> :CtrlPMRU<CR>
-nnoremap <C-t> :tabnew<CR>
+"nnoremap <C-t> :tabnew<CR>
 "nnoremap <C-,> :bprevious<CR>
 "nnoremap <C-.> :bnext<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
