@@ -41,7 +41,8 @@ Plugin 'scrooloose/nerdcommenter'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
-Plugin 'kien/ctrlp.vim'
+"Plugin 'kien/ctrlp.vim' " CtrlP has better syntax highlighting so use that
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rking/ag.vim'
 
