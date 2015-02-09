@@ -14,6 +14,7 @@ set splitright
 set splitbelow
 set lazyredraw " Faster scrolling
 set hidden " Hide buffers instead of asking to save them when chaning buffers
+set backspace=2
 
 " Use ag
 if executable('ag')
@@ -38,6 +39,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'taglist.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'tpope/vim-surround'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
@@ -114,3 +116,6 @@ let g:neocomplete#max_list = 10
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 let g:necoghc_enable_detailed_browse = 1
+
+let g:ctrlp_max_height = 20
+let g:ctrlp_root_markers = ['.ctrlp']
