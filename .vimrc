@@ -41,10 +41,12 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
 Plugin 'terryma/vim-expand-region'
+Plugin 'ryandoyle/HiCursorWords'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
-Plugin 'kien/ctrlp.vim'
+"Plugin 'kien/ctrlp.vim' " CtrlP has better syntax highlighting so use that
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rking/ag.vim'
 
@@ -73,7 +75,7 @@ hi Search          ctermfg=253 ctermbg=21
 " cterm=undercurl
 
 " Highlight the word under the cursor
-autocmd CursorMoved * exe printf('match UnderCursor /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+"autocmd CursorMoved * exe printf('match UnderCursor /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " Current line settings
 set cursorline
@@ -89,7 +91,6 @@ nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TlistToggle<CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap <C-f> :Ag<SPACE>
-"nnoremap <C-[> :pop<CR>
 
 " Remember what line we were on
 if has("autocmd")
@@ -112,6 +113,11 @@ let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#enable_auto_select = 0
 let g:neocomplete#max_list = 10
+
+" Highlight cursor settings
+let g:HiCursorWords_delay = 10
+"let g:HiCursorWords_hiGroupRegexp = '^((?!Comment).)*$'
+"let g:HiCursorWords_debugEchoHiName = 1
 
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
