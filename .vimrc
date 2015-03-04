@@ -41,6 +41,7 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
 Plugin 'ryandoyle/HiCursorWords'
+Plugin 'tpope/vim-dispatch'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
@@ -59,6 +60,9 @@ Plugin 'tpope/vim-endwise'
 Plugin 'justinmk/vim-syntax-extra'
 Plugin 'scrooloose/syntastic'
 Plugin 'eagletmt/neco-ghc'
+
+" Framework helpers 
+Plugin 'thoughtbot/vim-rspec'
 
 call vundle#end()
 filetype plugin indent on
@@ -80,16 +84,13 @@ hi Search          ctermfg=253 ctermbg=21
 set cursorline
 
 " Custom maps
-"nnoremap <C-e> :MRU<CR>
 nnoremap <C-e> :CtrlPMRU<CR>
-"nnoremap <C-t> :tabnew<CR>
-"nnoremap <C-,> :bprevious<CR>
-"nnoremap <C-.> :bnext<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TlistToggle<CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap <C-f> :Ag<SPACE>
+map <Leader>sf :call RunCurrentSpecFile()<CR>
 
 " Remember what line we were on
 if has("autocmd")
@@ -119,8 +120,10 @@ let g:HiCursorWords_delay = 10
 "let g:HiCursorWords_debugEchoHiName = 1
 
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete tabstop=2
 let g:necoghc_enable_detailed_browse = 1
 
 let g:ctrlp_max_height = 20
 let g:ctrlp_root_markers = ['.ctrlp']
+
+let g:rspec_command = "Dispatch rspec {spec}"
