@@ -40,6 +40,7 @@ Plugin 'taglist.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
+Plugin 'terryma/vim-expand-region'
 Plugin 'ryandoyle/HiCursorWords'
 Plugin 'tpope/vim-dispatch'
 
@@ -111,7 +112,7 @@ let Tlist_WinWidth = 40
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#enable_auto_select = 1
+let g:neocomplete#enable_auto_select = 0
 let g:neocomplete#max_list = 10
 
 " Highlight cursor settings
