@@ -42,7 +42,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
 Plugin 'terryma/vim-expand-region'
 Plugin 'ryandoyle/HiCursorWords'
-Plugin 'tpope/vim-dispatch'
+Plugin 'ervandew/supertab'
 
 " File navigation
 " Plugin 'yegappan/mru'  " Using CtrlP MRU now
