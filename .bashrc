@@ -96,9 +96,10 @@ for path in $HOME/.apps/*/bin; do
   PATH=$path:$PATH
 done
 
-PATH=$HOME/.bin:$HOME/.npm/bin/:$HOME/.rbenv/shims:$PATH
+PATH=$HOME/.bin:$HOME/.local/bin:$HOME/.npm/bin/:$HOME/.cargo/bin:$HOME/.rbenv/shims:$PATH
 
 export GOPATH=$HOME/code/gopath
 export PATH=$GOPATH/bin:$PATH
+export EDITOR=vim
 
 test -f $HOME/.bashrc_local && source $HOME/.bashrc_local
