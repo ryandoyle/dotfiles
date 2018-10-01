@@ -34,7 +34,8 @@ Plugin 'gmarik/Vundle.vim'
 " Editor helpers
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'taglist.vim'
 Plugin 'jiangmiao/auto-pairs'
@@ -45,8 +46,6 @@ Plugin 'ryandoyle/HiCursorWords'
 Plugin 'ervandew/supertab'
 
 " File navigation
-" Plugin 'yegappan/mru'  " Using CtrlP MRU now
-"Plugin 'kien/ctrlp.vim' " CtrlP has better syntax highlighting so use that
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rking/ag.vim'
@@ -63,7 +62,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'eagletmt/neco-ghc'
 
 " Framework helpers 
-Plugin 'thoughtbot/vim-rspec'
+Plugin 'janko-m/vim-test'
 
 call vundle#end()
 filetype plugin indent on
@@ -91,7 +90,7 @@ nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TlistToggle<CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap <C-f> :Ag<SPACE>
-map <Leader>sf :call RunCurrentSpecFile()<CR>
+nnoremap <silent> <C-S-F10> :TestFile<CR>
 
 " Remember what line we were on
 if has("autocmd")
@@ -127,4 +126,3 @@ let g:necoghc_enable_detailed_browse = 1
 let g:ctrlp_max_height = 20
 let g:ctrlp_root_markers = ['.ctrlp']
 
-let g:rspec_command = "Dispatch rspec {spec}"
