@@ -1,0 +1,186 @@
+#!/usr/bin/env python
+#
+# Podman Presto - quick containers in the shell that work how I want it 
+#
+# XXX Clean all the testing containers with 
+# podman ps |grep pp-baseimage | awk '{print $1}' | xargs -- podman stop
+
+import argparse
+import json
+import os
+import random
+import re
+import string
+import subprocess
+
+
+class Podman:
+
+    def run(self, container_spec):
+        ret = subprocess.run(["podman", "run", "-d", "--rm", "--network", "host", "--systemd=true",
+                              "-v", container_spec.volume, "--name", container_spec.name, "--hostname",
+                              container_spec.hostname,
+                              "--label", container_spec.label, container_spec.image], capture_output=True, text=True)
+        ret.check_returncode()
+        # ContainerID
+        return ret.stdout.strip()
+    
+    def stop(self, id):
+        ret = subprocess.run(["podman", "stop", id], capture_output=True, text=True)
+        ret.check_returncode()
+        return ret.stdout.strip()
+
+    # Intentionally exec's and replaces this process
+    def exec(self, id):
+        os.execvp("podman", ["podman", "exec", "-t", "-i", "-w", "/pp", id, "bash"])
+
+    def list(self):
+        # podman ps -a --filter "label=net.ryandoyle.pp.pwd" --format json
+        ret = subprocess.run(["podman", "ps", "-a", "--filter", "label=net.ryandoyle.pp.pwd", "--format", "json"],
+                             capture_output=True, text=True)
+        ret.check_returncode()
+
+        return json.loads(ret.stdout)
+
+
+class ContainerSpec:
+
+    def __init__(self):
+        self.random_part = ''.join(random.choices(string.ascii_lowercase, k=8))
+
+    @property
+    def label(self):
+        return f"net.ryandoyle.pp.pwd={os.getcwd()}"
+
+    @property
+    def volume(self):
+        return f"{os.getcwd()}:/pp"
+
+    @property
+    def name(self):
+        return f"pp-{self.random_part}"
+
+    @property
+    def hostname(self):
+        return f"pp-{self.random_part}-{re.sub('[^0-9a-zA-Z]+', '-', os.getcwd())[-80:]}"
+
+    @property
+    def image(self):
+        # XXX: Derive this elsewhere
+        return "pp-baseimage:latest"
+
+
+class PPContainerDto:
+
+    def __init__(self, json_obj) -> None:
+        self.json_obj = json_obj
+
+    @property
+    def id(self):
+        return self.json_obj["Id"][:12]
+
+    @property
+    def path(self):
+        return self.json_obj["Labels"]["net.ryandoyle.pp.pwd"]
+
+    @property
+    def status(self):
+        return self.json_obj["Status"]
+
+
+class PPContainerViewDto:
+    def __init__(self, pp_container_dto):
+        self.pp_container_dto = pp_container_dto
+
+    def as_array_fmt(self):
+        return [self.pp_container_dto.id, self.path_highlighting_cwd, self.pp_container_dto.status]
+
+    @property
+    def path_highlighting_cwd(self):
+        if os.getcwd() == self.pp_container_dto.path:
+            return f"{self.pp_container_dto.path} (*)"
+        return self.pp_container_dto.path
+
+
+class PPService:
+    def __init__(self) -> None:
+        self.podman = Podman()
+
+    def create_pp(self):
+        c = ContainerSpec()
+        id = self.podman.run(c)
+        return id
+
+    def enter_pp(self, id):
+        self.podman.exec(id)
+
+    def purge_pp(self, id):
+        self.podman.stop(id)
+
+    def find_pp_for_cwd(self):
+        return list(filter(lambda c: c.path == os.getcwd(), self.list_pp()))
+
+    def list_pp(self):
+        return list(map(lambda p: PPContainerDto(p), self.podman.list()))
+
+
+class PPListCommand:
+    def __init__(self, pp_service):
+        self.pp_service = pp_service
+
+    def run(self):
+        formatter = "{:<12}  {:<50}  {:<40}".format
+        print(formatter("ID", "PATH", "STATUS"))
+        for p in self.pp_service.list_pp():
+            print(formatter(*PPContainerViewDto(p).as_array_fmt()))
+
+
+class PPEnterCommand:
+    def __init__(self, pp_service):
+        self.pp_service = pp_service
+
+    def run(self):
+        pps = self.pp_service.find_pp_for_cwd()
+        if len(pps) == 0:
+            print("Creating new container for this path...")
+            id = self.pp_service.create_pp()
+            self.pp_service.enter_pp(id)
+        elif len(pps) == 1:
+            self.pp_service.enter_pp(pps[0].id)
+        else:
+            print(f"Warning: more than 1 container at this path. Entering oldest ({pps[0].id})...")
+            self.pp_service.enter_pp(pps[0].id)
+
+class PPPurgeCommand:
+    def __init__(self, pp_service):
+        self.pp_service = pp_service
+        
+    def run(self):
+        pps = self.pp_service.find_pp_for_cwd()
+        if len(pps) == 0:
+            print(f"Warning: No container at {os.getcwd()} to purge")
+        elif len(pps) > 1:
+            print(f"Warning: More than 1 container at {os.getcwd()}. Specify container id")
+        else:
+            self.pp_service.purge_pp(pps[0].id)
+        
+        
+
+def main():
+    parser = argparse.ArgumentParser(description="Quick containers in your shell")
+    parser.add_argument('-l', '--list', action="store_true", help='List containers')
+    parser.add_argument('-p', '--purge', action="store_true", help='Purge containers')
+    args = parser.parse_args()
+
+    pp = PPService()
+
+    if args.list:
+        PPListCommand(pp).run()
+    elif args.purge:
+        PPPurgeCommand(pp).run()
+    else:
+        PPEnterCommand(pp).run()
+
+
+if __name__ == '__main__':
+    main()
