@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #
-# Podman Presto - quick containers in the shell that work how I want it 
+# Podman Presto - quick containers in the shell that work how I want it
 #
-# XXX Clean all the testing containers with 
+# XXX Clean all the testing containers with
 # podman ps |grep pp-baseimage | awk '{print $1}' | xargs -- podman stop
 
 import argparse
@@ -15,6 +15,7 @@ import subprocess
 import tempfile
 
 _IMAGE_NAME = "pp-baseimage:latest"
+
 
 class PodmanError(RuntimeError):
     pass
@@ -31,7 +32,7 @@ class Podman:
             raise PodmanError(ret.stderr)
         # ContainerID
         return ret.stdout.strip()
-    
+
     def stop(self, id):
         ret = subprocess.run(["podman", "stop", id], capture_output=True, text=True)
         ret.check_returncode()
@@ -99,6 +100,7 @@ VOLUME [ "/sys/fs/cgroup" ]
 
 CMD ["/lib/systemd/systemd"]
 """
+
 
 class ContainerSpec:
 
@@ -212,10 +214,11 @@ class PPEnterCommand:
             print(f"Warning: more than 1 container at this path. Entering oldest ({pps[0].id})...")
             self.pp_service.enter_pp(pps[0].id)
 
+
 class PPPurgeCommand:
     def __init__(self, pp_service):
         self.pp_service = pp_service
-        
+
     def run(self):
         pps = self.pp_service.find_pp_for_cwd()
         if len(pps) == 0:
@@ -224,7 +227,8 @@ class PPPurgeCommand:
             print(f"Warning: More than 1 container at {os.getcwd()}. Specify container id")
         else:
             self.pp_service.purge_pp(pps[0].id)
-        
+
+
 class PPBuildCommand:
     def __init__(self, pp_service) -> None:
         self.pp_service = pp_service
