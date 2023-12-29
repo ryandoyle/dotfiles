@@ -32,7 +32,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Editor helpers
-Plugin 'Shougo/neocomplete.vim'
+Plugin 'lifepillar/vim-mucomplete'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -108,11 +108,9 @@ let Tlist_Use_Right_Window = 1
 let Tlist_WinWidth = 40
 
 " Autocomplete settings
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#enable_auto_select = 0
-let g:neocomplete#max_list = 10
+set completeopt+=menuone
+set completeopt+=noselect
+let g:mucomplete#enable_auto_at_startup = 1
 
 " Highlight cursor settings
 let g:HiCursorWords_delay = 10
