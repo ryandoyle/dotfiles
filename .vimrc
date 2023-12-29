@@ -33,6 +33,7 @@ Plugin 'gmarik/Vundle.vim'
 
 " Editor helpers
 Plugin 'lifepillar/vim-mucomplete'
+Plugin 'dense-analysis/ale'  " Linter
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -43,7 +44,6 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
 Plugin 'terryma/vim-expand-region'
 Plugin 'ryandoyle/HiCursorWords'
-Plugin 'ervandew/supertab'
 
 " File navigation
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -55,11 +55,7 @@ Plugin 'tomasr/molokai'
 
 " Language plugins
 Plugin 'puppetlabs/puppet-syntax-vim'
-Plugin 'Keithbsmiley/rspec.vim'
-Plugin 'tpope/vim-endwise'
 Plugin 'justinmk/vim-syntax-extra'
-Plugin 'scrooloose/syntastic'
-Plugin 'eagletmt/neco-ghc'
 
 " Framework helpers 
 Plugin 'janko-m/vim-test'
@@ -108,18 +104,13 @@ let Tlist_Use_Right_Window = 1
 let Tlist_WinWidth = 40
 
 " Autocomplete settings
-set completeopt+=menuone
-set completeopt+=noselect
+set completeopt+=menuone,noinsert,popup
 let g:mucomplete#enable_auto_at_startup = 1
 
 " Highlight cursor settings
 let g:HiCursorWords_delay = 10
 "let g:HiCursorWords_hiGroupRegexp = '^((?!Comment).)*$'
 "let g:HiCursorWords_debugEchoHiName = 1
-
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete tabstop=2
-let g:necoghc_enable_detailed_browse = 1
 
 let g:ctrlp_max_height = 20
 let g:ctrlp_root_markers = ['.ctrlp']
