@@ -12,6 +12,12 @@ import random
 import re
 import string
 import subprocess
+import tempfile
+
+_IMAGE_NAME = "pp-baseimage:latest"
+
+class PodmanError(RuntimeError):
+    pass
 
 
 class Podman:
@@ -21,7 +27,8 @@ class Podman:
                               "-v", container_spec.volume, "--name", container_spec.name, "--hostname",
                               container_spec.hostname,
                               "--label", container_spec.label, container_spec.image], capture_output=True, text=True)
-        ret.check_returncode()
+        if ret.returncode != 0:
+            raise PodmanError(ret.stderr)
         # ContainerID
         return ret.stdout.strip()
     
@@ -38,10 +45,60 @@ class Podman:
         # podman ps -a --filter "label=net.ryandoyle.pp.pwd" --format json
         ret = subprocess.run(["podman", "ps", "-a", "--filter", "label=net.ryandoyle.pp.pwd", "--format", "json"],
                              capture_output=True, text=True)
-        ret.check_returncode()
+        if ret.returncode != 0:
+            raise PodmanError(ret.stderr)
+
 
         return json.loads(ret.stdout)
 
+    def build(self, build_spec):
+        ret = subprocess.run(["podman", "build", "--no-cache", "-f", build_spec.dockerfile_path,
+                            "-t", build_spec.tag, build_spec.context_dir]) 
+        if ret.returncode != 0:
+            raise PodmanError(ret.stderr)
+
+
+class BuildSpec:
+
+    def __init__(self, context_dir):
+        self.context_dir = context_dir
+
+    @property
+    def tag(self):
+        return _IMAGE_NAME
+
+    @property
+    def dockerfile_path(self):
+        f = open(f"{self.context_dir}/Dockerfile", "w")
+        f.write(self.dockerfile)
+        return f"{self.context_dir}/Dockerfile"
+
+    @property
+    def dockerfile(self):
+        return """
+FROM ubuntu:22.04
+
+RUN apt-get update ; \
+    apt-get install -y systemd systemd-sysv ; \
+    apt-get install -y vim silversearcher-ag ; \
+    apt-get clean ; \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ; \
+    cd /lib/systemd/system/sysinit.target.wants/ ; \
+    ls | grep -v systemd-tmpfiles-setup | xargs rm -f $1 ; \
+    rm -f /lib/systemd/system/multi-user.target.wants/* ; \
+    rm -f /etc/systemd/system/*.wants/* ; \
+    rm -f /lib/systemd/system/local-fs.target.wants/* ; \
+    rm -f /lib/systemd/system/sockets.target.wants/*udev* ; \
+    rm -f /lib/systemd/system/sockets.target.wants/*initctl* ; \
+    rm -f /lib/systemd/system/basic.target.wants/* ; \
+    rm -f /lib/systemd/system/anaconda.target.wants/* ; \
+    rm -f /lib/systemd/system/plymouth* ; \
+    rm -f /lib/systemd/system/systemd-update-utmp*
+
+VOLUME [ "/sys/fs/cgroup" ]
+
+CMD ["/lib/systemd/systemd"]
+"""
 
 class ContainerSpec:
 
@@ -66,8 +123,7 @@ class ContainerSpec:
 
     @property
     def image(self):
-        # XXX: Derive this elsewhere
-        return "pp-baseimage:latest"
+        return _IMAGE_NAME
 
 
 class PPContainerDto:
@@ -123,6 +179,11 @@ class PPService:
     def list_pp(self):
         return list(map(lambda p: PPContainerDto(p), self.podman.list()))
 
+    def build_base_image(self):
+        with tempfile.TemporaryDirectory(prefix="pp-dockerfile-builder") as d_name:
+            spec = BuildSpec(d_name)
+            self.podman.build(spec)
+
 
 class PPListCommand:
     def __init__(self, pp_service):
@@ -164,12 +225,19 @@ class PPPurgeCommand:
         else:
             self.pp_service.purge_pp(pps[0].id)
         
-        
+class PPBuildCommand:
+    def __init__(self, pp_service) -> None:
+        self.pp_service = pp_service
+
+    def run(self):
+        self.pp_service.build_base_image()
+
 
 def main():
     parser = argparse.ArgumentParser(description="Quick containers in your shell")
     parser.add_argument('-l', '--list', action="store_true", help='List containers')
     parser.add_argument('-p', '--purge', action="store_true", help='Purge containers')
+    parser.add_argument('-b', '--build', action="store_true", help='Build base image')
     args = parser.parse_args()
 
     pp = PPService()
@@ -178,6 +246,8 @@ def main():
         PPListCommand(pp).run()
     elif args.purge:
         PPPurgeCommand(pp).run()
+    elif args.build:
+        PPBuildCommand(pp).run()
     else:
         PPEnterCommand(pp).run()
 
