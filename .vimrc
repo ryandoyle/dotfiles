@@ -32,13 +32,83 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Editor helpers
-Plugin 'lifepillar/vim-mucomplete'
-Plugin 'dense-analysis/ale'  " Linter
+"Plugin 'lifepillar/vim-mucomplete'
+"set completeopt+=menuone,noinsert,popup
+"let g:mucomplete#enable_auto_at_startup = 1
+
+"Plugin 'dense-analysis/ale'  " Linter
+Plugin 'prabirshrestha/vim-lsp'
+let g:lsp_diagnostics_echo_cursor = 1 " print gutter messages for errors/warnings
+"let g:lsp_float_max_width = 0 " Doesn't seem to do anything
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    
+    " Custom toggling
+    call lsp#disable_diagnostics_for_buffer()
+    let g:my_lsp_diagnostics_enabled = 0
+    
+endfunction
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+" START toggle diagnstics
+let g:my_lsp_diagnostics_enabled = 1
+
+" From https://github.com/prabirshrestha/vim-lsp/issues/1312
+function s:MyToggleLSPDiagnostics()
+    if g:my_lsp_diagnostics_enabled == 1
+        call lsp#disable_diagnostics_for_buffer()
+        let g:my_lsp_diagnostics_enabled = 0
+        echo "LSP Diagnostics : off"
+    else
+        call lsp#enable_diagnostics_for_buffer()
+        let g:my_lsp_diagnostics_enabled = 1
+        echo "LSP Diagnostics : on"
+    endif
+endfunction
+
+command MyToggleLSPDiagnostics call s:MyToggleLSPDiagnostics()
+nnoremap <F12> :MyToggleLSPDiagnostics<CR>
+" END toggle diagnostics
+
+Plugin 'mattn/vim-lsp-settings'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+Plugin 'prabirshrestha/asyncomplete-buffer.vim' "doenst work
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'allowlist': ['*'],
+    \ 'blocklist': [''],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ 'config': {
+    \    'max_buffer_size': 5000000,
+    \  },
+    \ }))
+
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
-Plugin 'taglist.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
@@ -71,10 +141,6 @@ colorscheme molokai
 hi MatchParen      ctermfg=253  ctermbg=236 cterm=bold
 hi UnderCursor     ctermbg=18
 hi Search          ctermfg=253 ctermbg=21 
-" cterm=undercurl
-
-" Highlight the word under the cursor
-"autocmd CursorMoved * exe printf('match UnderCursor /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " Current line settings
 set cursorline
@@ -83,7 +149,6 @@ set cursorline
 nnoremap <C-e> :CtrlPMRU<CR>
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeFind<CR>
-nnoremap <F4> :TlistToggle<CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 nnoremap <C-f> :Ag<SPACE>
 nnoremap <silent> <C-S-F10> :TestFile<CR>
@@ -99,18 +164,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t' " Just show the title
 let g:airline_theme='simple'
 
-" Config for taglist
-let Tlist_Use_Right_Window = 1
-let Tlist_WinWidth = 40
-
-" Autocomplete settings
-set completeopt+=menuone,noinsert,popup
-let g:mucomplete#enable_auto_at_startup = 1
-
 " Highlight cursor settings
 let g:HiCursorWords_delay = 10
-"let g:HiCursorWords_hiGroupRegexp = '^((?!Comment).)*$'
-"let g:HiCursorWords_debugEchoHiName = 1
 
 let g:ctrlp_max_height = 20
 let g:ctrlp_root_markers = ['.ctrlp']
